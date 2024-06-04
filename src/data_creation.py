@@ -4,7 +4,12 @@ import pandas as pd
 import warnings
 import numpy as np
 
+import configparser
+
 warnings.filterwarnings('ignore')
+
+settings = configparser.ConfigParser()
+settings.read('config/settings.ini')
 
 
 def delete_files(dir_path):
