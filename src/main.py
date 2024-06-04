@@ -8,7 +8,7 @@ from data_creation import dc_main
 # from model_testing import mt_main
 
 import logging
-
+import configparser
 app = FastAPI()
 
 logger = logging.getLogger(__name__)
@@ -16,6 +16,9 @@ stream_handler = logging.StreamHandler()
 file_handler = logging.FileHandler('logs/log.log')
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
+
+settings = configparser.ConfigParser()
+settings.read('config/settings.ini')
 
 
 # Сообщение-заглушка для метода GET с инструкцией для метода POST
