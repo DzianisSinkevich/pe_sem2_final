@@ -1,5 +1,6 @@
 import requests
 import configparser
+from main import get_root
 
 
 def get():
@@ -20,3 +21,4 @@ def post():
 
 get()
 post()
+get_root()
