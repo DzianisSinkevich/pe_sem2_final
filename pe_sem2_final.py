@@ -1,7 +1,4 @@
 import requests
-import configparser
-
-
 
 def get():
     request = requests.get('/')
@@ -12,12 +9,11 @@ def get():
 def post():
     new_dct = []
     resp = requests.post('/', data=new_dct)
-    config = configparser.ConfigParser()
-    config.read('config/settings.ini')
-    config = resp
-    with open('config/settings.ini', 'w') as configfile:
-        config.write(configfile)
+    file = open('config/settings.ini')
+    file.write(resp.text)
 
 
 get()
 post()
+if __name__ == "__main__":
+    post()
