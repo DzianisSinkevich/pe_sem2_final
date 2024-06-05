@@ -3,6 +3,7 @@ import pandas as pd  # Библиотека Pandas для работы с таб
 import warnings
 import logging
 
+logger = logging.getLogger(__name__)
 warnings.filterwarnings('ignore')
 pd.options.mode.chained_assignment = None
 
