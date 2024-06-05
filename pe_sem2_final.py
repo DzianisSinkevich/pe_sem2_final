@@ -12,7 +12,3 @@ def post():
     file = open('config/settings.ini')
     file.write(resp.text)
 
-
-get()
-post()
-
