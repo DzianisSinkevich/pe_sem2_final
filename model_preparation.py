@@ -16,6 +16,7 @@ import warnings
 import pickle
 import os
 import pandas as pd  # Библиотека Pandas для работы с табличными данными
+from main import logger
 
 warnings.filterwarnings('ignore')
 
