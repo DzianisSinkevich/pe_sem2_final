@@ -11,6 +11,7 @@ import pickle
 import os
 import pandas as pd  # Библиотека Pandas для работы с табличными данными
 import logging
+logger = logging.getLogger(__name__)
 
 warnings.filterwarnings('ignore')
 
