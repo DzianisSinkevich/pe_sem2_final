@@ -3,6 +3,7 @@ from sklearn.datasets import fetch_openml
 import pandas as pd
 import warnings
 import numpy as np
+from main import logger
 
 warnings.filterwarnings('ignore')
 
