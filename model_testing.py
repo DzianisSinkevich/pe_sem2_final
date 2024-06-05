@@ -9,6 +9,7 @@ import numpy as np  # библиотека Numpy для операций лин�
 import warnings
 import pickle
 import os
+import logging
 
 import pandas as pd  # Библиотека Pandas для работы с табличными данными
 
