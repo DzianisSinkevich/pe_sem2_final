@@ -13,5 +13,8 @@ def post():
     file = open('config/settings.ini')
     file.write(resp.text)
 
+def test_dummy():
+    pass
+
 post()
 get()
