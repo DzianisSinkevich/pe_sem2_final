@@ -18,10 +18,10 @@ warnings.filterwarnings('ignore')
 def read_file(file_path):
     try:
         df = pd.read_csv(file_path)
-        print("File " + file_path + " readed successfully.")
+        logger.critical("File " + file_path + " readed successfully.")
         return df
     except IOError:
-        print("Error uccured while readed file '" + file_path + "'.")
+        logger.critical("Error uccured while readed file '" + file_path + "'.")
 
 
 def remove_old_results():
@@ -31,18 +31,18 @@ def remove_old_results():
             file_path = os.path.join('results', file)
             if os.path.isfile(file_path):
                 os.remove(file_path)
-        print("All files from '/results' deleted successfully.")
+        logger.critical("All files from '/results' deleted successfully.")
     except OSError:
-        print("Error occurred while deleting '/results/results'.")
+        logger.critical("Error occurred while deleting '/results/results'.")
 
 
 def create_results():
     try:
-        print("Start creating of file '/results/results'.")
+        logger.info("Start creating of file '/results/results'.")
         open("results/results", "a")
-        print("/results/results created successfully.")
+        logger.critical("/results/results created successfully.")
     except OSError:
-        print("Error occurred while creating '/results/results'.")
+        logger.critical("Error occurred while creating '/results/results'.")
 
 
 def save_results(data):
@@ -52,16 +52,16 @@ def save_results(data):
         with open("results/results", "a") as text_file:
             text_file.write(data)
     except IOError:
-        print("Error uccured while save data in /results/results")
+        logger.critical("Error uccured while save data in /results/results")
 
 
 def load_pipeline():
     try:
         pipeline = pickle.load(open('pipeline/pipeline.pkl', 'rb'))
-        print("Pipeline pipeline/pipeline.pkl loaded successfully.")
+        logger.critical("Pipeline pipeline/pipeline.pkl loaded successfully.")
         return pipeline
     except IOError:
-        print("Error uccured while loaded pipeline/pipeline.pkl.")
+        logger.critical("Error uccured while loaded pipeline/pipeline.pkl.")
 
 
 def calculate_metric(model_pipe, x, y, metric=f1_score):
@@ -89,8 +89,8 @@ def cross_validation(x, y, model, scoring, cv_rule):
     """
     scores = cross_validate(model, x, y, scoring=scoring, cv=cv_rule)
     DF_score = pd.DataFrame(scores)
-    print('Cross validation error:')
-    print(DF_score.mean()[2:])
+    logger.info('Cross validation error:')
+    logger.info(DF_score.mean()[2:])
 
 
 def main(test_df_path):
@@ -163,8 +163,8 @@ class RareGrouper(BaseEstimator, TransformerMixin):
 
 
 def mt_main():
-    print("<<< Start model testing >>>")
+    logger.info("<<< Start model testing >>>")
     remove_old_results()
     create_results()
     main('test/df_test_0.csv')
-    print("<<< Finish model testing >>>")
+    logger.info("<<< Finish model testing >>>")
