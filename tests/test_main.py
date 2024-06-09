@@ -14,7 +14,7 @@ class TestAPI(unittest.TestCase):
         params = {"": ""}
         response = client.get("/")
         self.assertEqual(response.status_code, 200)
-        response = requests.post(url, data=params)
+        response = requests.post(data=params)
         self.assertIn("Модель обучена", response.text)
 
     def test_model_preparation(self):
