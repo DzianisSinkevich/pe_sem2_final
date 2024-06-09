@@ -20,9 +20,13 @@ import logging
 
 warnings.filterwarnings('ignore')
 
-logger = logging.getLogger(__name__)
 stream_handler = logging.StreamHandler()
-file_handler = logging.FileHandler('logs/log.log')
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+file_handler = logging.FileHandler(os.path.join(parent_dir, 'logs/log.log'))
+file_handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
 
@@ -32,10 +36,10 @@ def read_file(file_path):
         df = pd.read_csv(file_path)
         # df['day_mean_temp'] = pd.to_numeric(df['day_mean_temp'])
         df = df.fillna(0)
-        logger.info("File " + file_path + " readed successfully.")
+        logger.info("Файл " + file_path + " прочтен успешно.")
         return df
     except IOError:
-        logger.critical("Error uccured while readed file '" + file_path + "'.")
+        logger.critical("Ошибка чтения файла '" + file_path + "'.")
 
 
 def save_model(pipeline):
@@ -43,9 +47,9 @@ def save_model(pipeline):
         if not os.path.isdir('pipeline'):
             os.mkdir('pipeline')
         pickle.dump(pipeline, open('pipeline/pipeline.pkl', 'wb'))
-        logger.info("Pipeline pipeline/pipeline.pkl saved successfully.")
+        logger.info("Pipeline pipeline/pipeline.pkl сохранене успешно.")
     except IOError:
-        logger.critical("Error uccured while saved pipeline/pipeline.pkl.")
+        logger.critical("Ошибка сохранения pipeline/pipeline.pkl.")
 
 
 def preparation(train_df_path):
@@ -85,6 +89,7 @@ def preparation(train_df_path):
         ('model', LogisticRegression(random_state=42))
         ])
     pipe_all.fit(x_train, y_train)
+    logger.info("<<< Модель обучена >>>")
 
     save_model(pipe_all)
 
@@ -136,6 +141,6 @@ class RareGrouper(BaseEstimator, TransformerMixin):
 
 
 def mp_main():
-    logger.info("<<< Start preparation >>>")
+    logger.info("<<< Подготовка модели начата >>>")
     preparation('train/df_train_0.csv')
-    logger.info("<<< Finish preparation >>>\n")
+    logger.info("<<< Подготовка модели закончена >>>\n")

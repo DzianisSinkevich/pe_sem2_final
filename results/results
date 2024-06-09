@@ -5,8 +5,8 @@ f1 on test data: 0.7138
 Model's scores: 
               precision    recall  f1-score   support
 
-       hight       0.80      0.99      0.88     47255
-         low       0.59      0.03      0.06     12398
+         low       0.80      0.99      0.88     47255
+       hight       0.59      0.03      0.06     12398
 
     accuracy                           0.79     59653
    macro avg       0.70      0.51      0.47     59653

@@ -16,9 +16,13 @@ logger = logging.getLogger(__name__)
 
 warnings.filterwarnings('ignore')
 
-logger = logging.getLogger(__name__)
 stream_handler = logging.StreamHandler()
-file_handler = logging.FileHandler('logs/log.log')
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+file_handler = logging.FileHandler(os.path.join(parent_dir, 'logs/log.log'))
+file_handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
 
@@ -26,10 +30,10 @@ logger.addHandler(file_handler)
 def read_file(file_path):
     try:
         df = pd.read_csv(file_path)
-        logger.critical("File " + file_path + " readed successfully.")
+        logger.info("Файл " + file_path + " прочтен успешно.")
         return df
     except IOError:
-        logger.critical("Error uccured while readed file '" + file_path + "'.")
+        logger.critical("Ошибка чтения файла '" + file_path + "'.")
 
 
 def remove_old_results():
@@ -39,37 +43,40 @@ def remove_old_results():
             file_path = os.path.join('results', file)
             if os.path.isfile(file_path):
                 os.remove(file_path)
-        logger.critical("All files from '/results' deleted successfully.")
+        logger.info("Все файлы из '/results' удалены успешно.")
     except OSError:
-        logger.critical("Error occurred while deleting '/results/results'.")
+        logger.critical("Ошибка удаления файлов из '/results/results'.")
 
 
 def create_results():
     try:
-        logger.critical("Start creating of file '/results/results'.")
+        logger.info("Начало создания '/results/results'.")
         open("results/results", "a")
-        logger.critical("/results/results created successfully.")
+        logger.info("/results/results создан успешно.")
     except OSError:
-        logger.critical("Error occurred while creating '/results/results'.")
+        logger.critical("Ошибка создания '/results/results'.")
 
 
 def save_results(data):
     try:
+        logger.info("Начало записи results/results.")
         if not os.path.isdir('results'):
             os.mkdir('results')
         with open("results/results", "a") as text_file:
+            logger.info(data)
             text_file.write(data)
+        logger.info("results/results записан успешно.")
     except IOError:
-        logger.critical("Error uccured while save data in /results/results")
+        logger.critical("Ошибка записи /results/results")
 
 
 def load_pipeline():
     try:
         pipeline = pickle.load(open('pipeline/pipeline.pkl', 'rb'))
-        logger.critical("Pipeline pipeline/pipeline.pkl loaded successfully.")
+        logger.info("Pipeline pipeline/pipeline.pkl загружен успешно.")
         return pipeline
     except IOError:
-        logger.critical("Error uccured while loaded pipeline/pipeline.pkl.")
+        logger.critical("Ошибка загрузки pipeline/pipeline.pkl.")
 
 
 def calculate_metric(model_pipe, x, y, metric=f1_score):
@@ -171,8 +178,8 @@ class RareGrouper(BaseEstimator, TransformerMixin):
 
 
 def mt_main():
-    logger.info("<<< Start model testing >>>")
+    logger.info("<<< Тестирование модели начато >>>")
     remove_old_results()
     create_results()
     main('test/df_test_0.csv')
-    logger.info("<<< Finish model testing >>>")
+    logger.info("<<< Тестирование модели закончено >>>")

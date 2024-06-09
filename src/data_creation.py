@@ -6,15 +6,20 @@ import numpy as np
 
 import configparser
 import logging
+import os
 
 warnings.filterwarnings('ignore')
 
 settings = configparser.ConfigParser()
 settings.read('config/settings.ini')
 
-logger = logging.getLogger(__name__)
 stream_handler = logging.StreamHandler()
-file_handler = logging.FileHandler('logs/log.log')
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+file_handler = logging.FileHandler(os.path.join(parent_dir, 'logs/log.log'))
+file_handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
 logger.addHandler(stream_handler)
 logger.addHandler(file_handler)
 
@@ -26,9 +31,9 @@ def delete_files(dir_path):
             file_path = os.path.join(dir_path, file)
             if os.path.isfile(file_path):
                 os.remove(file_path)
-        logger.info("All files from '" + dir_path + "' deleted successfully.")
+        logger.info("Все файлы из '" + dir_path + "' удалены успешно.")
     except OSError:
-        logger.critical("Error occurred while deleting files.")
+        logger.critical("Ошибка удаления файлов.")
 
 
 def save_file(df, dir_path, file_name):
@@ -37,9 +42,9 @@ def save_file(df, dir_path, file_name):
     try:
         file_path = os.path.join(dir_path, file_name)
         df.to_csv(file_path, index=False)
-        logger.info("File " + file_path + " created successfully.")
+        logger.info("Файл " + file_path + " создан успешно.")
     except IOError:
-        logger.critical("Error uccured while creating file " + file_path + " .")
+        logger.critical("Ошибка создания файла " + file_path + " .")
 
 
 def get_dfs():
@@ -52,7 +57,7 @@ def get_dfs():
 
 
 def dc_main():
-    logger.info("<<< Start data creation >>>")
+    logger.info("<<< Создания набора данных начато >>>")
 
     dir_path = 'test'
     if os.path.isdir(dir_path):
@@ -65,4 +70,4 @@ def dc_main():
     save_file(df_train, 'train', 'df_train_0.csv')
     save_file(df_test, 'test', 'df_test_0.csv')
 
-    logger.info("<<< Finish data creation >>>\n")
+    logger.info("<<< Создание набора данных закончено >>>\n")
