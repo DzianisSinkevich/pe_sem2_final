@@ -1,20 +1,24 @@
 import unittest
 import requests
 
+from fastapi.testclient import TestClient
+
+from main import app
+
+client = TestClient(app)
+
 
 class TestAPI(unittest.TestCase):
 
     def test_get_request(self):
-        url = "/"
         params = {"": ""}
-        response = requests.get(url)
+        response = client.get("/")
         self.assertEqual(response.status_code, 200)
         response = requests.post(url, data=params)
         self.assertIn("Модель обучена", response.text)
 
     def test_model_preparation(self):
-        url = "/"
-        response = requests.get(url)
+        response = client.get("/")
         self.assertEqual(response.status_code, 200)
 
         with open('../logs/log.log', 'r') as file:
@@ -23,8 +27,7 @@ class TestAPI(unittest.TestCase):
         self.assertIn("Модель обучена", lines)
 
     def test_model_result(self):
-        url = "/"
-        response = requests.get(url)
+        response = client.get("/")
         self.assertEqual(response.status_code, 200)
 
         with open('../logs/log.log', 'r') as file:
