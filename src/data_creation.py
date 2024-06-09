@@ -5,11 +5,18 @@ import warnings
 import numpy as np
 
 import configparser
+import logging
 
 warnings.filterwarnings('ignore')
 
 settings = configparser.ConfigParser()
 settings.read('config/settings.ini')
+
+logger = logging.getLogger(__name__)
+stream_handler = logging.StreamHandler()
+file_handler = logging.FileHandler('logs/log.log')
+logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
 
 
 def delete_files(dir_path):
@@ -19,9 +26,9 @@ def delete_files(dir_path):
             file_path = os.path.join(dir_path, file)
             if os.path.isfile(file_path):
                 os.remove(file_path)
-        print("All files from '" + dir_path + "' deleted successfully.")
+        logger.info("All files from '" + dir_path + "' deleted successfully.")
     except OSError:
-        print("Error occurred while deleting files.")
+        logger.critical("Error occurred while deleting files.")
 
 
 def save_file(df, dir_path, file_name):
@@ -30,9 +37,9 @@ def save_file(df, dir_path, file_name):
     try:
         file_path = os.path.join(dir_path, file_name)
         df.to_csv(file_path, index=False)
-        print("File " + file_path + " created successfully.")
+        logger.info("File " + file_path + " created successfully.")
     except IOError:
-        print("Error uccured while creating file " + file_path + " .")
+        logger.critical("Error uccured while creating file " + file_path + " .")
 
 
 def get_dfs():
@@ -45,7 +52,7 @@ def get_dfs():
 
 
 def dc_main():
-    print("<<< Start data creation >>>")
+    logger.info("<<< Start data creation >>>")
 
     dir_path = 'test'
     if os.path.isdir(dir_path):
@@ -58,4 +65,4 @@ def dc_main():
     save_file(df_train, 'train', 'df_train_0.csv')
     save_file(df_test, 'test', 'df_test_0.csv')
 
-    print("<<< Finish data creation >>>\n")
+    logger.info("<<< Finish data creation >>>\n")

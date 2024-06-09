@@ -11,9 +11,16 @@ import pickle
 import os
 import pandas as pd  # Библиотека Pandas для работы с табличными данными
 import logging
+
 logger = logging.getLogger(__name__)
 
 warnings.filterwarnings('ignore')
+
+logger = logging.getLogger(__name__)
+stream_handler = logging.StreamHandler()
+file_handler = logging.FileHandler('logs/log.log')
+logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
 
 
 def read_file(file_path):

@@ -11,7 +11,7 @@ pd.options.mode.chained_assignment = None
 def read_file(file_path):
     try:
         df = pd.read_csv(file_path)
-        logger.critical("File " + file_path + " readed successfully.")
+        logger.info("File " + file_path + " readed successfully.")
         return df
     except IOError:
         logger.critical("Error uccured while readed file '" + file_path + "'.")
@@ -20,7 +20,7 @@ def read_file(file_path):
 def save_file(df, file_path):
     try:
         df.to_csv(file_path, index=False)
-        logger.critical("File " + file_path + " created successfully.")
+        logger.info("File " + file_path + " created successfully.")
     except IOError:
         logger.critical("Error uccured while creating file " + file_path + " .")
 
