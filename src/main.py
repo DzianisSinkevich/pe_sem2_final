@@ -3,9 +3,9 @@ import uvicorn
 from fastapi.responses import HTMLResponse
 
 from data_creation import dc_main
-# from data_preprocessing import dp_main
-# from model_preparation import mp_main
-# from model_testing import mt_main
+from data_preprocessing import dp_main
+from model_preparation import mp_main
+from model_testing import mt_main
 
 import logging
 import configparser
@@ -21,14 +21,14 @@ settings = configparser.ConfigParser()
 settings.read('config/settings.ini')
 
 
-# Сообщение-заглушка для метода GET с инструкцией для метода POST
+# Метод для запуска конвеера подготовки данных, модели, тестирования модели и вывода результата
 @app.get("/")
 def get_root():
     logger.info("START")
     dc_main()
-    # dp_main()
-    # mp_main()
-    # mt_main()
+    dp_main()
+    mp_main()
+    mt_main()
     logger.info("FINISH\n")
     logger.info("START results writing")
     with open('results/results', 'r') as f:
