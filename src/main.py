@@ -19,6 +19,7 @@ logger = logging.getLogger()
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+logs_directory = os.path.join(parent_dir, 'logs')
 file_handler = logging.FileHandler(os.path.join(parent_dir, 'logs/log.log'))
 stream_handler.setFormatter(formatter)
 file_handler.setFormatter(formatter)
@@ -29,9 +30,15 @@ settings = configparser.ConfigParser()
 settings.read('config/settings.ini')
 
 
+def create_directory(directory_path):
+    if not os.path.exists(directory_path):
+        os.makedirs(directory_path)
+
+
 # Метод для запуска конвеера подготовки данных, модели, тестирования модели и вывода результата
 @app.get("/")
 def get_root():
+    create_directory(logs_directory)
     logger.info("СТАРТ КОНВЕЕРА")
     dc_main()
     dp_main()

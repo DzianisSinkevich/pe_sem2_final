@@ -29,8 +29,8 @@ def delete_files(dir_path):
         files = os.listdir(dir_path)
         for file in files:
             file_path = os.path.join(dir_path, file)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
+            if os.path.isfile(os.path.join(parent_dir, file_path)):
+                os.remove(os.path.join(parent_dir, file_path))
         logger.info("Все файлы из '" + dir_path + "' удалены успешно.")
     except OSError:
         logger.critical("Ошибка удаления файлов.")
