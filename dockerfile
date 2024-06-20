@@ -1,8 +1,8 @@
 FROM ubuntu:22.04 as base
 
-COPY . /mplop_hw_3
+COPY . /pe_sem2_final_hw
 
-WORKDIR /mplop_hw_3
+WORKDIR /pe_sem2_final_hw
 
 EXPOSE 8003
 
@@ -11,4 +11,5 @@ RUN apt-get update &&\
     apt-get update &&\
     pip install -r requirements.txt
 
-CMD uvicorn main:app --host 0.0.0.0 --port 8002
+CMD cd src &&\
+    uvicorn main:app --host 0.0.0.0 --port 8002
